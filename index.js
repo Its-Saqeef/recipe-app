@@ -11,5 +11,11 @@ app.use(express.json());
 app.use("/assets",express.static("assets"))
 app.use("/recipe",recipeRouter);
 
+app.get("/",(req,res)=>{
+    return res.json({
+        message : "Welcome"
+    })
+})
+
 
 app.listen(port,()=> console.log("Server Started at port",port))
