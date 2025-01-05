@@ -19,7 +19,8 @@ const upload=multer({storage : storage});
 
 
 router.post("/add",upload.single("imageURL"),async(req,res)=>{
-    const {title,ingredients,description}=req.body
+    try {
+        const {title,ingredients,description}=req.body
     const imagefile = req.file
     const newRecipe = await Recipe.create({
         title : title,
@@ -31,27 +32,48 @@ router.post("/add",upload.single("imageURL"),async(req,res)=>{
     return res.status(200).json({
         message : "Recipee Added Successfully"
     })
+    } catch (error) {
+        return res.json({
+            message : "Error Occured"
+        })
+    }
+    
 })
 
 router.get("/",async(req,res)=>{
-    const recipees=await Recipe.find({})
+    try {
+        const recipees=await Recipe.find({})
     return res.json({
          recipees
     }).status(201)
+    } catch (error) {
+        return res.json({
+            message : "Error Occured"
+        })
+    }
+    
 })
 
 router.get("/:id",async(req,res)=>{
-    const {id}=req.params
+    try {
+        const {id}=req.params
     const result=await Recipe.findById({
         _id : id
     })
     return res.json({
         result
     }).status(201)
+    } catch (error) {
+        return res.json({
+            message : "Error Occured"
+        })
+    }
+    
 })
 
 router.delete("/:id",async(req,res)=>{
-    const {id}=req.params;
+    try {
+        const {id}=req.params;
     const result=await Recipe.findOne({_id : id})
     fs.unlink(`./${result.imageURL}`,(err)=>{
         return err
@@ -62,12 +84,18 @@ router.delete("/:id",async(req,res)=>{
     return res.json({
         message : "Recipe Removed"
     })
+    } catch (error) {
+        return res.json({
+            messgae : "Please try again"
+        })
+    }
+    
 })
 
 router.patch("/:id",upload.single("imageURL"),async(req,res)=>{
-    const {id}=req.params;
+    try {
+        const {id}=req.params;
     const imagefile=req.file
-    console.log(id)
     const found=await Recipe.findByIdAndUpdate(id,{
         title : req.body.title,
         ingredients : req.body.ingredients,
@@ -77,6 +105,12 @@ router.patch("/:id",upload.single("imageURL"),async(req,res)=>{
     return res.json({
         message : "Record Updated"
     })
+    } catch ({error}) {
+        return res.json({
+            message : "Error Occured"
+        })
+    }
+    
 })
 
 module.exports=router
