@@ -54,7 +54,7 @@ router.delete("/:id",async(req,res)=>{
     const {id}=req.params;
     const result=await Recipe.findOne({_id : id})
     fs.unlink(`./${result.imageURL}`,(err)=>{
-        
+        return err
     })
     await Recipe.findByIdAndDelete({
         _id : id
