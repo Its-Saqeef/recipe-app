@@ -8,7 +8,7 @@ const fs=require("fs")
 
 const storage =multer.diskStorage({
     destination : function(req,file,cb){
-        return cb(null,"./assets")
+        return cb(null,"assets")
     },
     filename : function(req,file,cb){
         return cb(null,`${Date.now}-${file.originalname}`)
