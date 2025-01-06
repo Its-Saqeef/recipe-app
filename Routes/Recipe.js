@@ -8,10 +8,10 @@ const fs=require("fs")
 
 const storage =multer.diskStorage({
     destination : function(req,file,cb){
-        return cb(null,"assets")
+         cb(null,"assets")
     },
     filename : function(req,file,cb){
-        return cb(null,`${Date.now}-${file.originalname}`)
+        cb(null,`${Date.now()}-${file.originalname}`)
     }
 })
 
@@ -21,13 +21,14 @@ const upload=multer({storage : storage});
 router.post("/add",upload.single("imageURL"),async(req,res)=>{
     try {
         const {title,ingredients,description}=req.body
-    const imagefile = req.file
-    const newRecipe = await Recipe.create({
+        const imagefile = req.file
+        console.log(imagefile)
+     const newRecipe = await Recipe.create({
         title : title,
         ingredients : ingredients,
         description : description,
         imageURL : imagefile.path
-    })
+    }) 
 
     return res.status(200).json({
         message : "Recipee Added Successfully"
