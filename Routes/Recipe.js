@@ -27,7 +27,7 @@ router.post("/add",upload.single("imageURL"),async(req,res)=>{
         title : title,
         ingredients : ingredients,
         description : description,
-        imageURL : imagefile.path
+        imageURL : `/assets/${imagefile.filename}
     }) 
 
     return res.status(200).json({
